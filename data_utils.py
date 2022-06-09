@@ -215,6 +215,7 @@ def files_from_fn(file_name, fn_to_learn, train_val_examples, test_examples, tra
 if __name__ == '__main__':
     if len(argv) > 1:
         print('Updating default parameters.')
+        print(argv[1])
         data_gen_params.update(literal_eval(argv[1]))
     else:
         print('Using default parameters.')

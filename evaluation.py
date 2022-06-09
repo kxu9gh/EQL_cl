@@ -22,6 +22,8 @@ from tensorflow.python.training.session_run_hook import SessionRunHook
 from timeout import time_limit, TimeoutException
 from utils import generate_arguments, yield_with_repeats, weight_name_for_i
 
+import dill
+
 
 class EvaluationHook(SessionRunHook):
     """Hook for saving evaluating the eql."""
@@ -129,12 +131,19 @@ def expression_graph_as_png(expr, output_file, view=True):
     assert output_file.endswith('.png')
     graph = Source(dotprint(expr))
     graph.format = 'png'
-    graph.render(output_file.rpartition('.png')[0], view=view, cleanup=True)
+    # graph.render(output_file.rpartition('.png')[0], view=view, cleanup=True)
 
 
 def expr_to_latex_png(expr, output_file):
     """Saves a png of a latex representation of a symbolic expression."""
-    sympy.preview(expr, viewer='file', filename=output_file)
+    # sympy.preview(expr, viewer='file', filename=output_file)
+
+
+def save_sympy_expr(expr, inputs, output_file):
+    # l_expr = sympy.lambdify(inputs, expr, modules="numpy")
+    # dill.settings['recurse'] = True
+    # dill.dump(l_expr, open(output_file, "wb"))
+    dill.dump(str(expr) + '\n' + str(inputs), open(output_file, "wb"))
 
 
 def expr_to_latex(expr):
@@ -173,6 +182,7 @@ def save_symbolic_expression(kernels, biases, fns_list, save_path, round_decimal
             print('Simplification of result y%i failed. Saving representations of non-simplified formula.' % i)
         expr_to_latex_png(res, path.join(save_path, 'latex_y' + str(i) + '.png'))
         expression_graph_as_png(result, path.join(save_path, 'graph_y' + str(i) + '.png'), view=False)
+        save_sympy_expr(result, in_nodes, path.join(save_path, 'sym_y' + str(i)))
 
 
 def calculate_complexity(kernels, biases, fns_list, thresh):

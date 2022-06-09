@@ -16,7 +16,7 @@ default_params = {'model_base_dir': 'results',
                   'id': 1,  # job_id to identify jobs in result metrics file, separate model_dir for each id
                   'train_val_file': 'data/F1data_train_val',  # Datafile containing training, validation data
                   'test_file': 'data/F1data_test',  # Datafile containing test data, if set to None no test data is used
-                  'epoch_factor': 1000,  # max_epochs = epoch_factor * num_h_layers
+                  'epoch_factor': 200,  # max_epochs = epoch_factor * num_h_layers
                   'num_h_layers': 1,  # number of hidden layers used in network
                   'generate_symbolic_expr': True,  # saves final network as a latex png and symbolic graph
                   'kill_summaries': False,  # reduces data generation, recommended when creating many jobs
@@ -112,12 +112,12 @@ if __name__ == '__main__':
 
     train_input, penalty_train_input, val_input, test_input = get_input_fns(**runtime_params, **metadata)
     print('One train episode equals %d normal epochs and 1 penalty epoch.' % runtime_params['penalty_every'])
-    for train_episode in range(1, max_episode + 1):
+    '''for train_episode in range(1, max_episode + 1):
         print('Train episode: %d out of %d.' % (train_episode, max_episode))
         penalty_flag = True
         eqlearner.train(input_fn=penalty_train_input)
         penalty_flag = False
-        eqlearner.train(input_fn=train_input, hooks=[logging_hook])
+        eqlearner.train(input_fn=train_input, hooks=[logging_hook])'''
     print('Training complete. Evaluating...')
     val_results = eqlearner.evaluate(input_fn=val_input, name='validation', hooks=[evaluation_hook])
     results = dict(val_error=val_results['loss'], complexity=evaluation_hook.get_complexity())

@@ -1,0 +1,15 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: Current File",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            // "args": ["{'train_val_file': 'data/F1data_train_val', 'test_file': 'data/F1data_test'}",""]
+            // "args": ["{{'file_name': 'F1data', 'fn_to_learn': 'F1', 'train_val_examples': 10000, 'test_examples': 5000}}"]
+        }
+    ]
+}
